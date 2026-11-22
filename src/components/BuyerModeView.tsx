@@ -143,17 +143,20 @@ export const BuyerModeView: React.FC<BuyerModeViewProps> = ({
               <label className="block text-[10px] font-extrabold uppercase text-slate-500">
                 Uang Saku Pembeli:
               </label>
-              <select
-                value={walletBudget}
-                onChange={(e) => setWalletBudget(Number(e.target.value))}
-                className="font-receipt font-bold text-sm text-emerald-700 bg-transparent focus:outline-none cursor-pointer"
-              >
-                <option value={10000}>Rp10.000</option>
-                <option value={20000}>Rp20.000</option>
-                <option value={30000}>Rp30.000</option>
-                <option value={50000}>Rp50.000</option>
-                <option value={100000}>Rp100.000</option>
-              </select>
+              <div className="flex items-center gap-1">
+                <span className="font-receipt font-bold text-sm text-emerald-700">Rp</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  step="500"
+                  value={walletBudget}
+                  onChange={(e) => setWalletBudget(Math.max(0, Number(e.target.value) || 0))}
+                  className="w-28 font-receipt font-bold text-sm text-emerald-700 bg-emerald-50 border border-emerald-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                  aria-label="Uang saku pembeli"
+                  placeholder="30000"
+                />
+              </div>
             </div>
           </div>
         </div>
