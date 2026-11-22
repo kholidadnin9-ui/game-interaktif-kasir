@@ -32,15 +32,125 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
     downloadReceiptPdf(transaction, storeName);
   };
 
+  // Preview uses the available phone width. The selected paper width is applied only when printing.
   const widthClass = {
-    '58mm': 'max-w-[270px] text-xs',
-    '80mm': 'max-w-[340px] text-sm',
-    'A4': 'max-w-[540px] text-base',
+    '58mm': 'w-full text-xs',
+    '80mm': 'w-full text-sm',
+    'A4': 'w-full text-base',
   }[paperSize];
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-      <div className="toy-card bg-[#FFFBEB] max-w-2xl w-full p-5 md:p-6 my-8 animate-pop">
+    <div className={`receipt-modal-root paper-${paperSize} fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto`}>
+      <style>{`
+        @media screen {
+          .receipt-modal-root .receipt-print-area {
+            width: 100%;
+            max-width: 100%;
+          }
+          .receipt-modal-root .receipt-paper {
+            width: 100%;
+            box-sizing: border-box;
+          }
+        }
+
+        @media print {
+          @page { size: auto; margin: 4mm; }
+
+          html, body, #root {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            background: #fff !important;
+          }
+
+          body * { visibility: hidden !important; }
+
+          .receipt-modal-root,
+          .receipt-modal-root .receipt-print-area,
+          .receipt-modal-root .receipt-print-area * {
+            visibility: visible !important;
+          }
+
+          .receipt-modal-root {
+            position: static !important;
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            background: #fff !important;
+            backdrop-filter: none !important;
+          }
+
+          .receipt-modal-root > .toy-card {
+            display: block !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            background: #fff !important;
+            overflow: visible !important;
+          }
+
+          .receipt-modal-root .no-print,
+          .receipt-modal-root .receipt-zigzag-top,
+          .receipt-modal-root .receipt-zigzag-bottom {
+            display: none !important;
+          }
+
+          .receipt-modal-root .receipt-print-area {
+            position: relative !important;
+            display: block !important;
+            box-sizing: border-box !important;
+            margin: 0 auto !important;
+            padding: 0 !important;
+            max-width: none !important;
+            overflow: visible !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+          }
+
+          .receipt-modal-root .receipt-paper {
+            box-sizing: border-box !important;
+            width: 72mm !important;
+            max-width: 72mm !important;
+            margin: 0 auto !important;
+            padding: 4mm !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            overflow: visible !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+          }
+
+          .receipt-modal-root.paper-58mm .receipt-paper {
+            width: 50mm !important;
+            max-width: 50mm !important;
+            padding: 2mm !important;
+          }
+
+          .receipt-modal-root.paper-A4 .receipt-paper {
+            width: 190mm !important;
+            max-width: 190mm !important;
+            padding: 8mm !important;
+          }
+
+          .receipt-modal-root .receipt-paper,
+          .receipt-modal-root .receipt-paper * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+        }
+      `}</style>
+      <div className="toy-card bg-[#FFFBEB] w-full max-w-2xl p-3 sm:p-5 md:p-6 my-2 sm:my-8 animate-pop">
         {/* Celebration Banner (Hidden on Print) */}
         <div className="no-print text-center mb-5 bg-gradient-to-r from-[#10B981] via-[#34D399] to-[#10B981] p-4 rounded-2xl border-3 border-[#1E293B] shadow-[0_4px_0_#1E293B] text-white">
           <div className="flex items-center justify-center gap-2 mb-1">
@@ -90,9 +200,9 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </div>
 
         {/* Authentic Thermal Receipt Paper */}
-        <div className={`print-area mx-auto w-full ${widthClass} transition-all`}>
+        <div className={`receipt-print-area print-area mx-auto ${widthClass} transition-all`}>
           <div className="receipt-zigzag-top no-print" />
-          <div className="bg-white px-5 py-6 border-x-2 border-dashed border-slate-300 shadow-md font-receipt text-[#1E293B]">
+          <div className="receipt-paper bg-white px-5 py-6 border-x-2 border-dashed border-slate-300 shadow-md font-receipt text-[#1E293B]">
             <div className="text-center border-b-2 border-dashed border-slate-400 pb-3 mb-3">
               <h3 className="font-bold text-lg tracking-wider">KIDS SMART CASHIER</h3>
               <p className="text-[11px] font-bold text-slate-600">Created by: Widodo Guru SD</p>
