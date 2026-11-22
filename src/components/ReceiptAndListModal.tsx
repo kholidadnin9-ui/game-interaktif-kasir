@@ -54,6 +54,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
         }
 
         @media print {
+          /* Mulai cetak dari sudut kiri atas halaman pertama */
           @page { size: auto; margin: 4mm; }
 
           html, body, #root {
@@ -75,22 +76,36 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
           }
 
           .receipt-modal-root {
-            position: static !important;
+            /* Lepaskan struk dari alur halaman aplikasi agar selalu mulai di halaman 1 */
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: auto !important;
+            bottom: auto !important;
+            inset: 0 auto auto 0 !important;
             display: block !important;
+            box-sizing: border-box !important;
             width: 100% !important;
             height: auto !important;
             min-height: 0 !important;
+            max-height: none !important;
             margin: 0 !important;
             padding: 0 !important;
             overflow: visible !important;
+            transform: none !important;
             background: #fff !important;
             backdrop-filter: none !important;
+            z-index: 2147483647 !important;
           }
 
           .receipt-modal-root > .toy-card {
+            position: static !important;
             display: block !important;
+            box-sizing: border-box !important;
             width: 100% !important;
             max-width: none !important;
+            height: auto !important;
+            min-height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
             border: 0 !important;
@@ -107,13 +122,16 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
           }
 
           .receipt-modal-root .receipt-print-area {
-            position: relative !important;
+            position: static !important;
             display: block !important;
             box-sizing: border-box !important;
             margin: 0 auto !important;
             padding: 0 !important;
             max-width: none !important;
             overflow: visible !important;
+            transform: none !important;
+            break-before: auto !important;
+            page-break-before: auto !important;
             break-inside: avoid !important;
             page-break-inside: avoid !important;
           }
