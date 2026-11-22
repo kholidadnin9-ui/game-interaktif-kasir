@@ -109,13 +109,6 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
     }
   };
 
-  // Card sizing classes based on Kecil / Sedang / Besar
-  const gridColsClass = {
-    SMALL: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5',
-    MEDIUM: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-    LARGE: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-  }[labelSize];
-
   const qrImgClass = {
     SMALL: 'w-24 h-24',
     MEDIUM: 'w-32 h-32',
@@ -123,7 +116,149 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
   }[labelSize];
 
   return (
-    <div className="space-y-5">
+    <div className="qr-generator-root space-y-5">
+      <style>{`
+        @page { size: A4 landscape; margin: 8mm; }
+
+        @media print {
+          html, body, #root {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            overflow: visible !important;
+          }
+
+          body {
+            background: #fff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          .qr-generator-root { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+          .qr-generator-root .no-print { display: none !important; }
+
+          .qr-generator-root .print-only {
+            display: block !important;
+            visibility: visible !important;
+            margin: 0 0 4mm !important;
+            padding: 0 !important;
+            text-align: center !important;
+          }
+
+          .qr-generator-root .print-only h1 {
+            margin: 0 !important;
+            font-size: 16pt !important;
+            line-height: 1.2 !important;
+          }
+
+          .qr-generator-root .print-only p {
+            margin: 1mm 0 0 !important;
+            font-size: 8pt !important;
+          }
+
+          .qr-generator-root .print-area {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            grid-auto-rows: 79mm !important;
+            grid-auto-flow: row !important;
+            align-items: stretch !important;
+            gap: 3mm !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+          }
+
+          .qr-generator-root .qr-print-card {
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            height: 79mm !important;
+            min-height: 79mm !important;
+            max-height: 79mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            border: 1px solid #64748b !important;
+            border-radius: 4mm !important;
+            box-shadow: none !important;
+            background: #fff !important;
+          }
+
+          .qr-generator-root .qr-card-header {
+            flex: 0 0 auto !important;
+            min-height: 9mm !important;
+            padding: 2mm 2.5mm !important;
+            border-bottom: 1px solid #1e293b !important;
+          }
+
+          .qr-generator-root .qr-card-body {
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            padding: 2.5mm !important;
+          }
+
+          .qr-generator-root .qr-product-info {
+            margin-bottom: 1mm !important;
+            gap: 2mm !important;
+          }
+
+          .qr-generator-root .qr-product-icon {
+            width: 11mm !important;
+            height: 11mm !important;
+            flex: 0 0 11mm !important;
+          }
+
+          .qr-generator-root .qr-code-frame {
+            box-sizing: border-box !important;
+            padding: 1.5mm !important;
+            margin: 1mm 0 !important;
+            border-radius: 3mm !important;
+            box-shadow: none !important;
+          }
+
+          .qr-generator-root .qr-code-image {
+            display: block !important;
+            width: 27mm !important;
+            height: 27mm !important;
+            max-width: 27mm !important;
+            max-height: 27mm !important;
+            object-fit: contain !important;
+            margin: 0 auto !important;
+          }
+
+          .qr-generator-root .qr-print-card h4 {
+            margin-top: 1mm !important;
+            font-size: 11pt !important;
+            line-height: 1.15 !important;
+          }
+
+          .qr-generator-root .qr-price {
+            margin-top: 1mm !important;
+            padding: 1mm 3mm !important;
+            font-size: 9pt !important;
+            line-height: 1.2 !important;
+          }
+
+          .qr-generator-root .qr-credit {
+            margin-top: 1mm !important;
+            font-size: 7pt !important;
+            line-height: 1.1 !important;
+          }
+
+          .qr-generator-root .qr-print-card,
+          .qr-generator-root .qr-print-card * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+        }
+      `}</style>
       {/* Control Studio Header (Hidden on Print) */}
       <div className="no-print toy-card p-5 bg-gradient-to-r from-[#E0F2FE] via-[#FEF3C7] to-[#EDE9FE]">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -244,8 +379,8 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
       </div>
 
       {/* QR Code Cards Grid */}
-      <div className={`print-area grid ${gridColsClass} gap-4`}>
-        {filteredProducts.map((product) => {
+      <div className="print-area grid grid-cols-3 gap-3">
+        {productsToExport.map((product) => {
           const cat = CATEGORIES.find((c) => c.id === product.category);
           const isSelected = selectedIds.includes(product.id);
           const isEditing = editingId === product.id;
@@ -253,14 +388,14 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
           return (
             <div
               key={product.id}
-              className={`toy-card-sm overflow-hidden bg-white flex flex-col justify-between transition ${
+              className={`qr-print-card toy-card-sm overflow-hidden bg-white flex flex-col justify-between transition ${
                 isSelected ? 'ring-4 ring-[#8B5CF6]' : ''
               }`}
             >
               {/* Colored Top Label Banner */}
               <div
                 style={{ backgroundColor: cat?.color || '#38BDF8' }}
-                className="px-3 py-2 border-b-2 border-[#1E293B] text-white flex items-center justify-between"
+                className="qr-card-header px-3 py-2 border-b-2 border-[#1E293B] text-white flex items-center justify-between"
               >
                 <div className="flex items-center gap-1.5">
                   <button
@@ -284,9 +419,9 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
               </div>
 
               {/* Card Body: Illustration + QR Code + Name + Price */}
-              <div className="p-3.5 flex flex-col items-center text-center flex-1">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-xl bg-[#FFFBEB] border-2 border-[#1E293B] flex items-center justify-center shrink-0">
+              <div className="qr-card-body p-3.5 flex flex-col items-center text-center flex-1">
+                <div className="qr-product-info flex items-center justify-center gap-3 mb-2">
+                  <div className="qr-product-icon w-12 h-12 rounded-xl bg-[#FFFBEB] border-2 border-[#1E293B] flex items-center justify-center shrink-0">
                     <ProductIllustration iconKey={product.iconKey} className="w-10 h-10" />
                   </div>
                   <div className="text-left">
@@ -300,15 +435,15 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
                 </div>
 
                 {/* QR Code Preview */}
-                <div className="p-2 rounded-2xl bg-white border-2 border-[#1E293B] shadow-xs my-1">
+                <div className="qr-code-frame p-2 rounded-2xl bg-white border-2 border-[#1E293B] shadow-xs my-1">
                   {qrMap[product.id] ? (
                     <img
                       src={qrMap[product.id]}
                       alt={`QR ${product.name}`}
-                      className={`${qrImgClass} object-contain mx-auto`}
+                      className={`${qrImgClass} qr-code-image object-contain mx-auto`}
                     />
                   ) : (
-                    <div className={`${qrImgClass} flex items-center justify-center text-xs`}>
+                    <div className={`${qrImgClass} qr-code-image flex items-center justify-center text-xs`}>
                       Memuat QR...
                     </div>
                   )}
@@ -347,13 +482,13 @@ export const QrGeneratorView: React.FC<QrGeneratorViewProps> = ({
                     <h4 className="font-display font-extrabold text-base text-[#1E293B] mt-1.5">
                       {product.name}
                     </h4>
-                    <div className="mt-1 px-4 py-1 rounded-xl bg-[#FFBE0B] border-2 border-[#1E293B] font-receipt font-bold text-sm text-[#1E293B]">
+                    <div className="qr-price mt-1 px-4 py-1 rounded-xl bg-[#FFBE0B] border-2 border-[#1E293B] font-receipt font-bold text-sm text-[#1E293B]">
                       {formatRupiah(product.price)}
                     </div>
                   </>
                 )}
 
-                <p className="text-[10px] font-bold text-slate-400 mt-2">
+                <p className="qr-credit text-[10px] font-bold text-slate-400 mt-2">
                   Created by: Widodo Guru SD
                 </p>
               </div>
