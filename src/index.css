@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #FFFBEB;
+    color: #1E293B;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Fredoka', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .font-receipt {
+    font-family: 'Space Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Tactile 3D Toy-Box Card & Button System */
+.toy-card {
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  box-shadow: 0 6px 0 #1E293B;
+  border-radius: 24px;
+}
+
+.toy-card-sm {
+  background: #FFFFFF;
+  border: 2.5px solid #1E293B;
+  box-shadow: 0 4px 0 #1E293B;
+  border-radius: 16px;
+}
+
+.toy-btn {
+  border: 3px solid #1E293B;
+  box-shadow: 0 5px 0 #1E293B;
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.1s ease, filter 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toy-btn:hover:not(:disabled) {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0 #1E293B;
+}
+
+.toy-btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #1E293B;
+}
+
+.toy-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.toy-btn-sm {
+  border: 2.5px solid #1E293B;
+  box-shadow: 0 3px 0 #1E293B;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toy-btn-sm:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #1E293B;
+}
+
+/* Awning Stripe Background */
+.awning-stripes {
+  background: repeating-linear-gradient(
+    90deg,
+    #38BDF8 0px,
+    #38BDF8 40px,
+    #FFFFFF 40px,
+    #FFFFFF 80px
+  );
+}
+
+.polka-bg {
+  background-color: #FFFBEB;
+  background-image: radial-gradient(#FDE68A 2px, transparent 2px), radial-gradient(#BAE6FD 2px, #FFFBEB 2px);
+  background-size: 48px 48px;
+  background-position: 0 0, 24px 24px;
+}
+
+/* Scanner Laser Animation */
+@keyframes scanLaser {
+  0% {
+    top: 8%;
+    opacity: 0.9;
+  }
+  50% {
+    top: 88%;
+    opacity: 1;
+  }
+  100% {
+    top: 8%;
+    opacity: 0.9;
+  }
+}
+
+.animate-laser {
+  animation: scanLaser 2.2s ease-in-out infinite;
+}
+
+@keyframes popBounce {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pop {
+  animation: popBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: floatSlow 3s ease-in-out infinite;
+}
+
+/* Receipt Sawtooth Edges */
+.receipt-zigzag-top {
+  background: linear-gradient(-45deg, #ffffff 8px, transparent 0), linear-gradient(45deg, #ffffff 8px, transparent 0);
+  background-position: left-bottom;
+  background-repeat: repeat-x;
+  background-size: 16px 16px;
+  height: 12px;
+  width: 100%;
+}
+
+.receipt-zigzag-bottom {
+  background: linear-gradient(-135deg, #ffffff 8px, transparent 0), linear-gradient(135deg, #ffffff 8px, transparent 0);
+  background-position: left-top;
+  background-repeat: repeat-x;
+  background-size: 16px 16px;
+  height: 12px;
+  width: 100%;
+}
+
+/* Custom Scrollbar for Kid-friendly UI */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #FEF3C7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb {
+  background: #38BDF8;
+  border-radius: 9999px;
+  border: 2px solid #1E293B;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0284C7;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-area {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}
+
+
+/* 2D Whimsical theme: playful pastel blocks, flat shadows, rounded geometry */
+:root {
+  --whim-red: #F87171;
+  --whim-yellow: #FBBF24;
+  --whim-green: #34D399;
+  --whim-pink: #F9A8D4;
+  --whim-blue: #60A5FA;
+  --whim-ink: #334155;
+}
+body {
+  background-color: #FFF9F0;
+  color: #334155;
+}
+.polka-bg {
+  background-color: #FFF9F0;
+  background-image:
+    radial-gradient(circle, rgba(96,165,250,.18) 1.5px, transparent 1.8px),
+    radial-gradient(circle, rgba(249,168,212,.18) 1.5px, transparent 1.8px);
+  background-size: 34px 34px;
+  background-position: 0 0, 17px 17px;
+}
+.toy-card, .toy-card-sm {
+  border: 2px solid var(--whim-ink);
+  box-shadow: 4px 4px 0 rgba(51,65,85,.16);
+  border-radius: 22px;
+}
+.toy-btn, .toy-btn-sm {
+  border: 2px solid var(--whim-ink);
+  box-shadow: 3px 3px 0 rgba(51,65,85,.24);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.toy-btn:active:not(:disabled), .toy-btn-sm:active:not(:disabled) {
+  transform: translate(2px,2px);
+  box-shadow: 1px 1px 0 rgba(51,65,85,.24);
+}
+.awning-stripes {
+  background: repeating-linear-gradient(90deg, #F87171 0 28px, #FBBF24 28px 56px, #34D399 56px 84px, #60A5FA 84px 112px, #F9A8D4 112px 140px);
+}
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; }
+  .toy-card, .toy-card-sm { box-shadow: none !important; border: 1px solid #64748b !important; }
+  table { page-break-inside: auto; }
+  tr, section { break-inside: avoid; }
+}
+
+@media print { @page { size: A4 landscape; margin: 12mm; } }
